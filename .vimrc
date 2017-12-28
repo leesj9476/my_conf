@@ -1,5 +1,5 @@
-set nocompatible              " be iMproved, required
-filetype off                  " required
+set nocompatible				" be iMproved, required
+filetype off					" required
 
 "Vundle
 set rtp+=~/.vim/bundle/Vundle.vim
@@ -18,47 +18,104 @@ Plugin 'Valloric/YouCompleteMe'
 "variable info
 Plugin 'SrcExpl'
 
-call vundle#end()            " required
-filetype plugin indent on    " required
+"taglist
+Plugin 'taglist-plus'
+
+"awesome status bar
+Plugin 'vim-airline/vim-airline'
+
+"show diff from git file
+Plugin 'airblade/vim-gitgutter'
+
+"theme
+Plugin 'nanotech/jellybeans.vim'
+
+"nerdcommenter
+Plugin 'scrooloose/nerdcommenter'
+
+"bash line decorator
+Plugin 'edkolev/promptline.vim'
+
+"syntax analyzer
+Plugin 'Syntastic'
+
+call vundle#end()			" required
+filetype plugin indent on	" required
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+"theme
 "
-" Brief help
-" :PluginList       - lists configured plugins
-" :PluginInstall    - installs plugins; append `!` to update or just :PluginUpdate
-" :PluginSearch foo - searches for foo; append `!` to refresh local cache
-" :PluginClean      - confirms removal of unused plugins; append `!` to auto-approve removal
+syntax enable
+colorscheme jellybeans
 
-syntax on
-colorscheme molokai 
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+"basic option
+"
+set history=100	"save editing history maximum 100
+set nobackup	"don't make .*~ file
+set noswapfile	"don't make .swp file
+set t_Co=256	"256 colors
+set noautochdir	"block automatically changing directory
 
-set nu
-set ruler
-set laststatus=2
-set showmatch
-set showmode
-set showcmd
-set t_Co=256
-set history=100
-set nobackup
-set noswapfile
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+"indentation
+"
+set tabstop=4		"tab size is 4
+set shiftwidth=4	"auto indent size is 4
+set smartindent		"smart indentation
+set autoindent		"auto indentation
+set cindent			"c style indentation
 
-set tabstop=4
-set shiftwidth=4
-set smartindent
-set autoindent
-set backspace=indent,eol,start
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+"searching
+"
+set showmatch	"matched parentheses highlight
+set hlsearch	"highlight search
+set incsearch	"highlight gradually
+set nowrapscan	"don't back to start point from EOF
+set ignorecase	"ignore upper and lower case
+set smartcase	"if upper case is exist on searching word,
+				"ignore 'set ignorecase'
 
-set hlsearch
-set incsearch
-set ignorecase
-set smartcase
-
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+"showing
+"
+set nu			"show line number
+set ruler		"show current cursor pos
+set showcmd		"show waiting command
+set showmode	"show mode to status bar
 set wildmenu
-set visualbell
-set mouse=a
+set laststatus=2	"show status info always
+set nocursorline	"remove line where cursor is exist
 
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+"cscope
+"
+set csprg=/usr/bin/cscope
+set cst
+set csto=0
+set nocsverb
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+"other func
+"
+set visualbell	"use visual bell instead of beep sound
+set mouse=a		"enable mouse use
+set backspace=indent,eol,start	"when typing backspace at end, start and indent,
+								"go back to previous line
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+"ctags
+"
+"find tags file until 4th upper directory
+set tags=./tags,../tags,../../tags,../../../tags,../../../../tags
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+"cscope
+"
+"shortcut
 if has("cscope")
 	set cscopetag
-	set csto=0
 	if filereadable("cscope.out")
 		cs add cscope.out
 	elseif $CSCOPE_DB != ""
@@ -75,37 +132,165 @@ if has("cscope")
 	nmap <C-\>i :cs find i ^<C-R>=expand("<cfile>")<CR>$<CR>
 	nmap <C-\>d :cs find d ^<C-R>=expand("<cword>")<CR><CR>
 
-	nmap <C-@>s :scs find s <C-R>=expand("<cword>")<CR><CR>
-	nmap <C-@>g :scs find g <C-R>=expand("<cword>")<CR><CR>
-	nmap <C-@>c :scs find c <C-R>=expand("<cword>")<CR><CR>
-	nmap <C-@>t :scs find t <C-R>=expand("<cword>")<CR><CR>
-	nmap <C-@>e :scs find e <C-R>=expand("<cword>")<CR><CR>
-	nmap <C-@>f :scs find f <C-R>=expand("<cfile>")<CR><CR>
-	nmap <C-@>i :scs find i ^<C-R>=expand("<cfile>")<CR>$<CR>
-	nmap <C-@>d :scs find d <C-R>=expand("<cword>")<CR><CR>
+	nmap <C-@>s :vert scs find s <C-R>=expand("<cword>")<CR><CR>
+	nmap <C-@>g :vert scs find g <C-R>=expand("<cword>")<CR><CR>
+	nmap <C-@>c :vert scs find c <C-R>=expand("<cword>")<CR><CR>
+	nmap <C-@>t :vert scs find t <C-R>=expand("<cword>")<CR><CR>
+	nmap <C-@>e :vert scs find e <C-R>=expand("<cword>")<CR><CR>
+	nmap <C-@>f :vert scs find f <C-R>=expand("<cfile>")<CR><CR>
+	nmap <C-@>i :vert scs find i ^<C-R>=expand("<cfile>")<CR>$<CR>
+	nmap <C-@>d :vert scs find d <C-R>=expand("<cword>")<CR><CR>
 
-	nmap <C-@><C-@>s :vert scs find s <C-R>=expand("<cword>")<CR><CR>
-	nmap <C-@><C-@>g :vert scs find g <C-R>=expand("<cword>")<CR><CR>
-	nmap <C-@><C-@>c :vert scs find c <C-R>=expand("<cword>")<CR><CR>
-	nmap <C-@><C-@>t :vert scs find t <C-R>=expand("<cword>")<CR><CR>
-	nmap <C-@><C-@>e :vert scs find e <C-R>=expand("<cword>")<CR><CR>
-	nmap <C-@><C-@>f :vert scs find f <C-R>=expand("<cfile>")<CR><CR>
-	nmap <C-@><C-@>i :vert scs find i ^<C-R>=expand("<cfile>")<CR>$<CR>
-	nmap <C-@><C-@>d :vert scs find d <C-R>=expand("<cword>")<CR><CR>
+	nmap <C-@><C-@>s :scs find s <C-R>=expand("<cword>")<CR><CR>
+	nmap <C-@><C-@>g :scs find g <C-R>=expand("<cword>")<CR><CR>
+	nmap <C-@><C-@>c :scs find c <C-R>=expand("<cword>")<CR><CR>
+	nmap <C-@><C-@>t :scs find t <C-R>=expand("<cword>")<CR><CR>
+	nmap <C-@><C-@>e :scs find e <C-R>=expand("<cword>")<CR><CR>
+	nmap <C-@><C-@>f :scs find f <C-R>=expand("<cfile>")<CR><CR>
+	nmap <C-@><C-@>i :scs find i ^<C-R>=expand("<cfile>")<CR>$<CR>
+	nmap <C-@><C-@>d :scs find d <C-R>=expand("<cword>")<CR><CR>
 endif
 
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "YouCompleteMe
+"
 let g:ycm_global_ycm_extra_conf = '~/.vim/.ycm_extra_conf.py'
-let g:ycm_confirm_extra_conf = 0
 
-"To avoid conflict snippets
+"auto complete select shortcut
 let g:ycm_key_list_select_completion = ['<C-j>', '<Down>']
 let g:ycm_key_list_previous_completion = ['<C-k>', '<Up>']
+
+"close preview tab after acception of offered completion string
 let g:ycm_autoclose_preview_window_after_completion = 1
 
+"use ctags
+let g:ycm_collect_identifiers_from_tags_files = 1
+
+"shortcut
 nmap <leader>g :YcmCompleter GoTo<CR>
 nmap <leader>gg :YcmCompleter GoToImprecise<CR>
 nmap <leader>d :YcmCompleter GoToDeclaration<CR>
 nmap <leader>t :YcmCompleter GetType<CR>
 nmap <leader>p :YcmCompleter GetParent<CR>
 nmap <F5> :YcmForceCompileAndDiagnostics<CR>
+
+let g:ycm_show_diagnostics_ui = 0
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+"NERDTree
+
+"quit NERDTree when left window is only taglist, NERDTree or both
+function! CheckLeftBuffers()
+	if tabpagenr('$') == 1
+	let i = 1
+	while i <= winnr('$')
+		if getbufvar(winbufnr(i), '&buftype') == 'help' ||
+			\ getbufvar(winbufnr(i), '&buftype') == 'quickfix' ||
+			\ exists('t:NERDTreeBufName') &&
+			\	 bufname(winbufnr(i)) == t:NERDTreeBufName ||
+			\ bufname(winbufnr(i)) == '__Tag_List__'
+		let i += 1
+		else
+		break
+		endif
+	endwhile
+	if i == winnr('$') + 1
+		qall
+	endif
+	unlet i
+	endif
+endfunction
+autocmd BufEnter * call CheckLeftBuffers()
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+"taglist
+
+"taglist is closed when the only window is taglist window
+let Tlist_Exit_OnlyWindow = 1
+
+"show current file's taglist
+let Tlist_Show_One_File = 1
+
+"when new file is edited, update ctags file automatically
+let Tlist_Auto_Update = 1
+
+"ctags directory
+let Tlist_Ctags_Cmd='/usr/bin/ctags'
+
+"prevent taglist width set to 0
+let Tlist_Inc_Winwidth = 0
+
+"set default width to 30
+let Tlist_Winwidth = 30
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+"taglist, nerdtree -> one sidebar
+"
+function! ToggleNerdtreeTaglist()
+	let NERDTree_close = (bufwinnr('NERD_tree') == -1)
+	let Taglist_close = (bufwinnr('__Tag_List__') == -1)
+
+	TlistToggle
+	NERDTreeToggle
+
+	if NERDTree_close && Taglist_close
+		wincmd K
+		wincmd b
+		wincmd L
+		wincmd h
+		exe 'vertical resize 30'
+	endif
+endfunction
+
+function! StartNerdtreeTaglist()
+	call ToggleNerdtreeTaglist()
+	call feedkeys("\<C-W>\<Right>")
+endfunction
+
+autocmd VimEnter * call StartNerdtreeTaglist()
+nmap <F8> :call ToggleNerdtreeTaglist()<CR>
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+"nerd commenter
+"
+"multi-line compact comment: <leader><c><s>
+"single-line comment: <leader><c><c>
+"
+"add 1 space after delemiters
+let g:NERDSpaceDelims = 1
+
+"set align to left
+let g:NERDDefaultAlign = 'left'
+
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+"promptline
+"
+let g:promptline_theme = 'airline'
+let g:promptline_preset = {
+	\ 'a'	: [ '\u', '\j' ],
+	\ 'b'	: [ '\w', promptline#slices#vcs_branch() ]}
+
+let g:promptline_symbols = {
+	\ 'left'		: '',
+	\ 'left_alt'	: '>',
+	\ 'dir_sep'		: ' / ',
+	\ 'truncation'	: '...',
+	\ 'vcs_branch'	: '',
+	\ 'space'		: ' '}
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+"Syntastic
+"
+set statusline+=%#warningmsg#
+set statusline+=%{SyntasticStatusLineFlag()}
+set statusline+=%*
+
+let g:syntastic_always_populate_loc_list = 1
+let g:syntastic_auto_loc_list = 1
+let g:syntastic_check_on_open = 1
+let g:syntastic_check_on_wq = 0
+
+let g:syntastic_cpp_compiler = 'g++'
+let g:syntastic_cpp_compiler_options = '-std=c++11 -Wall -Wextra -Wpedantic'
+let g:syntastic_c_compiler_options = '-std=c11 -Wall -Wextra -Wpedantic'
