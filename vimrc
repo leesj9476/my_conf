@@ -39,7 +39,7 @@ Plugin 'nanotech/jellybeans.vim'
 Plugin 'scrooloose/nerdcommenter'
 
 "syntax analyzer
-Plugin 'Syntastic'
+Plugin 'w0rp/ale'
 
 "search files
 Plugin 'ctrlpvim/ctrlp.vim'
@@ -59,9 +59,6 @@ Plugin 'easymotion/vim-easymotion'
 
 "multiple string cursor
 Plugin 'terryma/vim-multiple-cursors'
-
-"scroll smoothly
-Plugin 'terryma/vim-smooth-scroll'
 
 call vundle#end()			" required
 filetype plugin indent on	" required
@@ -193,10 +190,10 @@ let g:ycm_collect_identifiers_from_tags_files = 1
 
 "shortcut
 nmap <leader>g :YcmCompleter GoTo<CR>
-nmap <leader>gg :YcmCompleter GoToImprecise<CR>
 nmap <leader>d :YcmCompleter GoToDeclaration<CR>
 nmap <leader>t :YcmCompleter GetType<CR>
 nmap <leader>p :YcmCompleter GetParent<CR>
+let g:ycm_key_list_stop_completion = ['<Enter>']
 
 "no show diagnostic ui
 let g:ycm_show_diagnostics_ui = 0
@@ -319,23 +316,34 @@ let g:promptline_preset = {
 	\ 'z'	: [ promptline#slices#last_exit_code() ]}
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-"Syntastic
+"ale
 "
-"syntastic status line preset
-set statusline+=%#warningmsg#
-set statusline+=%{SyntasticStatusLineFlag()}
-set statusline+=%*
+"airline extension
+let g:airline#extensions#ale#enabled = 1
 
-"always update location list
-let g:syntastic_always_populate_loc_list = 1
+"error and warning symbol
+let g:ale_sign_error = '>>'
+let g:ale_sign_warning = '--'
 
-"automatically load error into the location list
-let g:syntastic_auto_loc_list = 1
+"error and warning str format
+let g:ale_echo_msg_error_str = 'E'
+let g:ale_echo_msg_warning_str = 'W'
+let g:ale_echo_msg_format = '[%linter%] %s [%severity%]'
 
-" set syntastic default compiler and options
-let g:syntastic_cpp_compiler = 'g++'
-let g:syntastic_cpp_compiler_options = '-std=c++11 -Wall -Wextra -Wpedantic'
-let g:syntastic_c_compiler_options = '-std=c11 -Wall -Wextra -Wpedantic'
+"no check when first load
+let g:ale_lint_on_text_changed = 'never'
+let g:ale_lint_on_enter = 0
+
+"show quickfix list
+let g:ale_set_loclist = 0
+let g:ale_set_quickfix = 1
+
+"C
+let g:ale_c_gcc_options = '-std=c11 -Wall -Wextra -Wpedantic'
+
+"C++
+let g:ale_cpp_gcc_executable = 'g++'
+let g:ycm_cpp_gcc_options = '-std=c++11 -Wall -Wextra -Wpedantic'
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "
@@ -351,7 +359,7 @@ let g:ctrlp_custom_ignore = {
 let g:ctrlp_working_path_mode = 'ra'
 
 "set cursorline color
-hi cursorline cterm=none ctermbg=darkgray ctermfg=white guibg=darkered guifg=white
+hi cursorline cterm=none ctermbg=darkgray ctermfg=white 
 set nocursorline
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -381,13 +389,7 @@ let g:multi_cursor_prev_key = '<C-P>'
 let g:multi_cursor_skip_key = '<C-X>'
 let g:multi_cursor_quit_key = '<Esc>'
 
-hi Visual cterm=none ctermbg=darkgray ctermfg=white guibg=darkered guifg=white
-
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-"vim-smooth-scroll
-"
-nmap <silent><C-Up> :call smooth_scroll#up(&scroll*2, 10, 5)<CR>
-nmap <silent><C-Down> :call smooth_scroll#down(&scroll*2, 10, 5)<CR>
+hi Visual cterm=none ctermbg=darkgray ctermfg=white
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "shortcut
