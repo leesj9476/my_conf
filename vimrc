@@ -5,8 +5,13 @@ filetype off					" required
 set rtp+=~/.vim/bundle/Vundle.vim
 call vundle#begin()
 
+"Vundle plugin
 Plugin 'VundleVim/Vundle.vim'
+
+"interactive git <=> vim
 Plugin 'tpope/vim-fugitive'
+
+"HTML template
 Plugin 'rstacruz/sparkup', {'rtp': 'vim/'}
 
 "view dir tree
@@ -14,9 +19,6 @@ Plugin 'The-NERD-tree'
 
 "auto complete
 Plugin 'Valloric/YouCompleteMe'
-
-"variable info
-Plugin 'SrcExpl'
 
 "taglist
 Plugin 'taglist-plus'
@@ -49,6 +51,18 @@ Plugin 'DoxygenToolkit.vim'
 Plugin 'shougo/vimshell.vim'
 Plugin 'shougo/vimproc.vim'
 
+"buffer manager
+Plugin 'jeetsukumaran/vim-buffergator'
+
+"motion on speed
+Plugin 'easymotion/vim-easymotion'
+
+"multiple string cursor
+Plugin 'terryma/vim-multiple-cursors'
+
+"scroll smoothly
+Plugin 'terryma/vim-smooth-scroll'
+
 call vundle#end()			" required
 filetype plugin indent on	" required
 
@@ -57,6 +71,7 @@ filetype plugin indent on	" required
 "
 syntax enable
 colorscheme jellybeans
+
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "basic option
@@ -240,6 +255,14 @@ function! ToggleNerdtreeTaglist()
 	let NERDTree_close = (bufwinnr('NERD_tree') == -1)
 	let Taglist_close = (bufwinnr('__Tag_List__') == -1)
 
+	if NERDTree_close && !Taglist_close
+		NERDTreeToggle
+	endif
+	
+	if !NERDTree_close && Taglist_close
+		TlistToggle
+	endif
+
 	TlistToggle
 	NERDTreeToggle
 
@@ -252,9 +275,14 @@ function! ToggleNerdtreeTaglist()
 	endif
 endfunction
 
+autocmd StdinReadPre * let s:std_in = 1
 function! StartNerdtreeTaglist()
-	call ToggleNerdtreeTaglist()
-	call feedkeys("\<C-W>\<Right>")
+	if argc() == 0
+		silent NERDTreeToggle
+	else
+		call ToggleNerdtreeTaglist()
+		call feedkeys("\<C-W>\<Right>")
+	end
 endfunction
 
 autocmd VimEnter * call StartNerdtreeTaglist()
@@ -272,6 +300,12 @@ let g:NERDSpaceDelims = 1
 let g:NERDDefaultAlign = 'left'
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+"vim-airline
+"
+"enable buffer line
+let g:airline#extensions#tabline#enabled = 1
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "promptline
 "
 "promptline theme
@@ -282,7 +316,7 @@ let g:promptline_preset = {
 	\ 'a'	: [ '\u' ],
 	\ 'b'	: [ '\t', '\w' ],
 	\ 'x'	: [ promptline#slices#vcs_branch(), '$(git rev-parse --short HEAD 2>/dev/null)'],
-	\ 'z' : [ promptline#slices#last_exit_code() ]}
+	\ 'z'	: [ promptline#slices#last_exit_code() ]}
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "Syntastic
@@ -292,10 +326,11 @@ set statusline+=%#warningmsg#
 set statusline+=%{SyntasticStatusLineFlag()}
 set statusline+=%*
 
+"always update location list
 let g:syntastic_always_populate_loc_list = 1
+
+"automatically load error into the location list
 let g:syntastic_auto_loc_list = 1
-let g:syntastic_check_on_open = 1
-let g:syntastic_check_on_wq = 0
 
 " set syntastic default compiler and options
 let g:syntastic_cpp_compiler = 'g++'
@@ -312,16 +347,60 @@ let g:ctrlp_custom_ignore = {
 	\ 'file': '\v\.(exe|so|dll)$'
 \}
 
+"set closest .git directory to cwd
+let g:ctrlp_working_path_mode = 'ra'
+
+"set cursorline color
+hi cursorline cterm=none ctermbg=darkgray ctermfg=white guibg=darkered guifg=white
+set nocursorline
+
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "DoxygetToolkit
 "
 
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+"buffergator
+"
+"hide buffer immediatly after editing buffer
+set hidden
+
+"set shortcut by myself
+let g:buffergator_suppress_keymap = 1
+
+"buffer cycle
+let g:buffergator_mru_cycle_loop = 1
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+"vim-multiple-cursor
+"
+"disable default setting
+let g:multi_cursor_use_default_mapping = 0
+
+let g:multi_cursor_next_key = '<C-N>'
+let g:multi_cursor_prev_key = '<C-P>'
+let g:multi_cursor_skip_key = '<C-X>'
+let g:multi_cursor_quit_key = '<Esc>'
+
+hi Visual cterm=none ctermbg=darkgray ctermfg=white guibg=darkered guifg=white
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+"vim-smooth-scroll
+"
+nmap <silent><C-Up> :call smooth_scroll#up(&scroll*2, 10, 5)<CR>
+nmap <silent><C-Down> :call smooth_scroll#down(&scroll*2, 10, 5)<CR>
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "shortcut
 "
+nmap <F3> :enew<CR>
 nmap <F5> :VimShell<CR>
 nmap <F6> :NERDTreeToggle<CR>
 nmap <F7> :TlistToggle<CR>
 nmap <F8> :call ToggleNerdtreeTaglist()<CR>
 nmap <F9> :Dox<CR>
+
+"buffer shortcut
+nmap <C-D> :bp <BAR> bd #<CR>
+nmap <C-J> :BuffergatorMruCyclePrev<CR>
+nmap <C-K> :BuffergatorMruCycleNext<CR>
+nmap <C-L> :BuffergatorTabsToggle<CR>
