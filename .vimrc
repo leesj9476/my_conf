@@ -24,6 +24,9 @@ Plugin 'taglist-plus'
 "awesome status bar
 Plugin 'vim-airline/vim-airline'
 
+"awesome bash prompt
+Plugin 'edkolev/promptline.vim'
+
 "show diff from git file
 Plugin 'airblade/vim-gitgutter'
 
@@ -33,11 +36,11 @@ Plugin 'nanotech/jellybeans.vim'
 "nerdcommenter
 Plugin 'scrooloose/nerdcommenter'
 
-"bash line decorator
-Plugin 'edkolev/promptline.vim'
-
 "syntax analyzer
 Plugin 'Syntastic'
+
+"search files
+Plugin 'ctrlpvim/ctrlp.vim'
 
 call vundle#end()			" required
 filetype plugin indent on	" required
@@ -56,6 +59,7 @@ set nobackup	"don't make .*~ file
 set noswapfile	"don't make .swp file
 set t_Co=256	"256 colors
 set noautochdir	"block automatically changing directory
+set encoding=utf-8
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "indentation
@@ -172,8 +176,8 @@ nmap <leader>gg :YcmCompleter GoToImprecise<CR>
 nmap <leader>d :YcmCompleter GoToDeclaration<CR>
 nmap <leader>t :YcmCompleter GetType<CR>
 nmap <leader>p :YcmCompleter GetParent<CR>
-nmap <F5> :YcmForceCompileAndDiagnostics<CR>
 
+"no show diagnostic ui
 let g:ycm_show_diagnostics_ui = 0
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -248,7 +252,6 @@ function! StartNerdtreeTaglist()
 endfunction
 
 autocmd VimEnter * call StartNerdtreeTaglist()
-nmap <F8> :call ToggleNerdtreeTaglist()<CR>
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "nerd commenter
@@ -262,26 +265,23 @@ let g:NERDSpaceDelims = 1
 "set align to left
 let g:NERDDefaultAlign = 'left'
 
-
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "promptline
 "
-let g:promptline_theme = 'airline'
-let g:promptline_preset = {
-	\ 'a'	: [ '\u', '\j' ],
-	\ 'b'	: [ '\w', promptline#slices#vcs_branch() ]}
+"promptline theme
+let g:promptline_theme = 'vim_statusline_3'
 
-let g:promptline_symbols = {
-	\ 'left'		: '',
-	\ 'left_alt'	: '>',
-	\ 'dir_sep'		: ' / ',
-	\ 'truncation'	: '...',
-	\ 'vcs_branch'	: '',
-	\ 'space'		: ' '}
+"promptline preset
+let g:promptline_preset = {
+	\ 'a'	: [ '\u' ],
+	\ 'b'	: [ '\t', '\w' ],
+	\ 'x'	: [ promptline#slices#vcs_branch(), '$(git rev-parse --short HEAD 2>/dev/null)'],
+	\ 'z' : [ promptline#slices#last_exit_code() ]}
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "Syntastic
 "
+"syntastic status line preset
 set statusline+=%#warningmsg#
 set statusline+=%{SyntasticStatusLineFlag()}
 set statusline+=%*
@@ -291,6 +291,27 @@ let g:syntastic_auto_loc_list = 1
 let g:syntastic_check_on_open = 1
 let g:syntastic_check_on_wq = 0
 
+" set syntastic default compiler and options
 let g:syntastic_cpp_compiler = 'g++'
 let g:syntastic_cpp_compiler_options = '-std=c++11 -Wall -Wextra -Wpedantic'
 let g:syntastic_c_compiler_options = '-std=c11 -Wall -Wextra -Wpedantic'
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+"
+"ctrlp
+"
+"ignore dirs and files
+let g:ctrlp_custom_ignore = {
+	\ 'dir': '\.git$\|public$\|log$\|tmp$\|vendor$',
+	\ 'file': '\v\.(exe|so|dll)$'
+\}
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+"shortcut
+"
+nmap <F2> :tabnew<CR>
+nmap <F3> <C-W><C-W>
+nmap <F6> :NERDTreeToggle<CR>
+nmap <F7> :TlistToggle<CR>
+nmap <F8> :call ToggleNerdtreeTaglist()<CR>
+
