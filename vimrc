@@ -42,6 +42,13 @@ Plugin 'Syntastic'
 "search files
 Plugin 'ctrlpvim/ctrlp.vim'
 
+"documentation in comment
+Plugin 'DoxygenToolkit.vim'
+
+"vimshell
+Plugin 'shougo/vimshell.vim'
+Plugin 'shougo/vimproc.vim'
+
 call vundle#end()			" required
 filetype plugin indent on	" required
 
@@ -96,7 +103,6 @@ set nocursorline	"remove line where cursor is exist
 "cscope
 "
 set csprg=/usr/bin/cscope
-set cst
 set csto=0
 set nocsverb
 
@@ -307,11 +313,15 @@ let g:ctrlp_custom_ignore = {
 \}
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+"DoxygetToolkit
+"
+
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "shortcut
 "
-nmap <F2> :tabnew<CR>
-nmap <F3> <C-W><C-W>
+nmap <F5> :VimShell<CR>
 nmap <F6> :NERDTreeToggle<CR>
 nmap <F7> :TlistToggle<CR>
 nmap <F8> :call ToggleNerdtreeTaglist()<CR>
-
+nmap <F9> :Dox<CR>
