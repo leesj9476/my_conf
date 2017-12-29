@@ -114,7 +114,7 @@ function __promptline {
   local sep=""
   #local sep=""
   local rsep=""
-  local alt_sep=""
+  local alt_sep="|"
   local alt_rsep=""
   local reset="${wrap}0${end_wrap}"
   local reset_bg="${wrap}49${end_wrap}"

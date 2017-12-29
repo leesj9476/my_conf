@@ -1,5 +1,5 @@
-set nocompatible				" be iMproved, required
-filetype off					" required
+set nocompatible
+filetype off
 
 "Vundle
 set rtp+=~/.vim/bundle/Vundle.vim
@@ -60,8 +60,8 @@ Plugin 'easymotion/vim-easymotion'
 "multiple string cursor
 Plugin 'terryma/vim-multiple-cursors'
 
-call vundle#end()			" required
-filetype plugin indent on	" required
+call vundle#end()
+filetype plugin indent on
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "theme
@@ -193,6 +193,8 @@ nmap <leader>g :YcmCompleter GoTo<CR>
 nmap <leader>d :YcmCompleter GoToDeclaration<CR>
 nmap <leader>t :YcmCompleter GetType<CR>
 nmap <leader>p :YcmCompleter GetParent<CR>
+
+let g:ycm_key_list_select_completion = ['<Tab>', '<Down>']
 let g:ycm_key_list_stop_completion = ['<Enter>']
 
 "no show diagnostic ui
