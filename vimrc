@@ -52,7 +52,7 @@ Plugin 'shougo/vimshell.vim'
 Plugin 'shougo/vimproc.vim'
 
 "buffer manager
-Plugin 'jeetsukumaran/vim-buffergator'
+Plugin 'zefei/vim-wintabs'
 
 "motion on speed
 Plugin 'easymotion/vim-easymotion'
@@ -394,8 +394,11 @@ let g:multi_cursor_quit_key = '<Esc>'
 hi Visual cterm=none ctermbg=darkgray ctermfg=white
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+function! CloseTab()
+endfunction
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "shortcut
-"
 nmap <F3> :enew<CR>
 nmap <F5> :VimShell<CR>
 nmap <F6> :NERDTreeToggle<CR>
@@ -404,7 +407,7 @@ nmap <F8> :call ToggleNerdtreeTaglist()<CR>
 nmap <F9> :Dox<CR>
 
 "buffer shortcut
-nmap <C-D> :bp <BAR> bd #<CR>
-nmap <C-J> :BuffergatorMruCyclePrev<CR>
-nmap <C-K> :BuffergatorMruCycleNext<CR>
+nmap <C-D> :call CloseTab()<CR>
+nmap <C-J> :WintabsPrevious<CR>
+nmap <C-K> :WintabsNext<CR>
 nmap <C-L> :BuffergatorTabsToggle<CR>
