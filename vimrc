@@ -52,7 +52,7 @@ Plugin 'shougo/vimshell.vim'
 Plugin 'shougo/vimproc.vim'
 
 "buffer manager
-Plugin 'zefei/vim-wintabs'
+Plugin 'jeetsukumaran/vim-buffergator'
 
 "motion on speed
 Plugin 'easymotion/vim-easymotion'
@@ -130,7 +130,8 @@ set backspace=indent,eol,start	"when typing backspace at end, start and indent,
 "ctags
 "
 "find tags file until 4th upper directory
-set tags=./tags,../tags,../../tags,../../../tags,../../../../tags
+set tags=./tags,../tags,../../tags,../../../tags,../../../../tags,
+set tags+=/usr/include/x86_64-linux-gnu/qt5/tags,
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "cscope
@@ -408,6 +409,6 @@ nmap <F9> :Dox<CR>
 
 "buffer shortcut
 nmap <C-D> :call CloseTab()<CR>
-nmap <C-J> :WintabsPrevious<CR>
-nmap <C-K> :WintabsNext<CR>
+nmap <C-J> :BuffergatorMruCyclePrev<CR>
+nmap <C-K> :BuffergatorMruCycleNext<CR>
 nmap <C-L> :BuffergatorTabsToggle<CR>
